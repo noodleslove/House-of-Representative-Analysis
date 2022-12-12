@@ -241,11 +241,6 @@ transactions.head()
 
 
 ```python
-# TODO
-```
-
-
-```python
 cleaned = transactions.copy()
 
 # convert `disclosure_date`, `transaction_date` to datetime type
@@ -310,17 +305,7 @@ cleaned.isna().sum()
 
 
 
-
-```python
-
-```
-
 ### Combine with political affliation dataset
-
-
-```python
-
-```
 
 
 ```python
@@ -688,7 +673,7 @@ combined['disclosure_year'].plot(kind='hist', density=True, bins=range(2019,2025
 
 
     
-![png](output_25_0.png)
+![png](output_22_0.png)
     
 
 
@@ -700,7 +685,7 @@ plt.xticks(rotation=0);
 
 
     
-![png](output_26_0.png)
+![png](output_23_0.png)
     
 
 
@@ -711,7 +696,7 @@ combined['amount'].value_counts().plot(kind='barh');
 
 
     
-![png](output_27_0.png)
+![png](output_24_0.png)
     
 
 
@@ -722,7 +707,7 @@ combined['representative'].value_counts().head(10).plot(kind='barh');
 
 
     
-![png](output_28_0.png)
+![png](output_25_0.png)
     
 
 
@@ -733,7 +718,7 @@ combined['district'].value_counts().head(10).plot(kind='barh');
 
 
     
-![png](output_29_0.png)
+![png](output_26_0.png)
     
 
 
@@ -744,16 +729,11 @@ combined['ticker'].value_counts().head(10).plot(kind='barh');
 
 
     
-![png](output_30_0.png)
+![png](output_27_0.png)
     
 
 
 ### Assessment of Missingness
-
-
-```python
-# TODO
-```
 
 
 ```python
@@ -849,62 +829,19 @@ def missingness_perm_test(df, missing_col, col):
     
     return obs_tvd, pval
 
-missingness_perm_test(combined, 'owner', 'type')
+obs_tvd, pval = missingness_perm_test(combined, 'owner', 'type')
 ```
 
 
     
-![png](output_35_0.png)
+![png](output_31_0.png)
     
 
 
 
     
-![png](output_35_1.png)
+![png](output_31_1.png)
     
-
-
-
-
-
-    (0.07390401960199536, 0.0)
-
-
-
-
-```python
-type_dist.plot(kind='barh', legend=True, title="Type by Missingness of Owner");
-```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    Cell In [19], line 1
-    ----> 1 type_dist.plot(kind='barh', legend=True, title="Type by Missingness of Owner")
-
-
-    NameError: name 'type_dist' is not defined
-
-
-
-```python
-obs_tvd = type_dist.diff(axis=1).iloc[:, -1].abs().sum() / 2
-obs_tvd
-```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    Cell In [20], line 1
-    ----> 1 obs_tvd = type_dist.diff(axis=1).iloc[:, -1].abs().sum() / 2
-          2 obs_tvd
-
-
-    NameError: name 'type_dist' is not defined
 
 
 
@@ -934,6 +871,14 @@ tvds[:10]
 ```
 
 
+
+
+    array([0.00394066, 0.01337585, 0.01542276, 0.00559226, 0.01175366,
+           0.00862066, 0.00919086, 0.00751793, 0.00661405, 0.01520279])
+
+
+
+
 ```python
 pval = np.mean(tvds >= obs_tvd)
 
@@ -942,17 +887,13 @@ plt.axvline(x=obs_tvd, color='red', linewidth=4, label='Observed TVD')
 plt.legend();
 ```
 
+
+    
+![png](output_33_0.png)
+    
+
+
 So we conclude that the missingness of `owner` is __MAR__, and it's dependent on `type` column the most. 
-
-
-```python
-
-```
-
-
-```python
-
-```
 
 ### Hypothesis Test / Permutation Test
 
@@ -961,11 +902,6 @@ So we conclude that the missingness of `owner` is __MAR__, and it's dependent on
 * **Null hypothesis**: the distribution of trading frequency among congresspeople from different party is the same. The difference between the two observed sample is due to chance.
 
 * **Alternative hypothesis**: the distribution of trading frequency among congresspeople from different party are different.
-
-
-```python
-# TODO
-```
 
 
 ```python
@@ -1154,7 +1090,7 @@ plt.legend();
 
 
     
-![png](output_47_0.png)
+![png](output_38_0.png)
     
 
 
@@ -1229,8 +1165,8 @@ stats[:10]
 
 
 
-    array([66.50108932, 49.80153509, 60.01960784, 59.98214286, 65.33776224,
-           72.13642961, 68.75      , 66.50108932, 67.50325901, 85.53868093])
+    array([59.98214286, 72.09833091, 70.87735849, 65.37517483, 74.30188679,
+           57.72      , 55.32653061, 68.71225071, 60.90181818, 65.33776224])
 
 
 
@@ -1245,7 +1181,7 @@ plt.legend();
 
 
     
-![png](output_52_0.png)
+![png](output_43_0.png)
     
 
 
@@ -1337,15 +1273,15 @@ sim_stats[:10]
 
 
     
-![png](output_56_0.png)
+![png](output_47_0.png)
     
 
 
 
 
 
-    array([0.53768289, 0.58560186, 0.59231296, 0.58560186, 1.17187577,
-           0.57323973, 0.59905285, 3.71209501, 0.74758808, 1.36546329])
+    array([3.49204486, 4.5007299 , 0.74758808, 1.03989987, 4.19301549,
+           0.85884316, 3.71209501, 0.81663253, 0.58560186, 0.96367451])
 
 
 
@@ -1765,13 +1701,3 @@ df.groupby('month').count().rename(columns={'transaction_date': 'count'})[['coun
 </div>
 
 
-
-
-```python
-
-```
-
-
-```python
-
-```
